@@ -1,0 +1,8 @@
+#Miniumum amount of players required before the game starts
+min-players: 2
+
+#Match countdown (in seconds)
+match-countdown: 5
+
+#Match length (in minutes)
+match-length: 2

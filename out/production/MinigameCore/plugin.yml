@@ -1,0 +1,8 @@
+name: RacingGame
+main: minigame.plugin.contest.Main
+version: 1.0
+author: BumbleBeee_
+description: Racing game
+commands:
+  race:
+    description: Main Command
