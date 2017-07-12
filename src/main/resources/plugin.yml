@@ -1,0 +1,8 @@
+name: ${project.name}
+main: ${plugin.main}
+version: ${project.version}
+author: [${plugin.author}]
+description: Racing game
+commands:
+  race:
+    description: Main Command

@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/MinigameCore.iml" filepath="$PROJECT_DIR$/MinigameCore.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Racing-Minigame.iml" filepath="$PROJECT_DIR$/Racing-Minigame.iml" />
     </modules>
   </component>
 </project>
