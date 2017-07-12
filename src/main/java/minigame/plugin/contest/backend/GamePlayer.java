@@ -1,6 +1,7 @@
 package minigame.plugin.contest.backend;
 
 import lombok.Getter;
+import minigame.plugin.contest.Main;
 import minigame.plugin.contest.engine.GameState;
 import org.bukkit.Bukkit;
 
@@ -42,5 +43,6 @@ public class GamePlayer
     private void setCoins(int amount, boolean increment)
     {
         this.coins = increment ? coins += amount : amount;
+        Main.getApi().setCoins(uuid, amount, increment);
     }
 }
