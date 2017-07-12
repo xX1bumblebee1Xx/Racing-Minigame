@@ -49,7 +49,7 @@ public class PlayerInteract implements Listener {
             am.removePlayer(p);
             p.sendMessage(ChatColor.GREEN + "You have left the game.");
         } else if (dis.equalsIgnoreCase(ChatColor.DARK_PURPLE + "Select a hero")) {
-            //TODO
+            //TODO select a hero gui
         }
     }
 

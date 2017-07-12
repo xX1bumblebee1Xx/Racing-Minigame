@@ -1,22 +1,20 @@
 package minigame.plugin.contest.engine.listeners;
 
 import minigame.plugin.contest.engine.Arena;
-import minigame.plugin.contest.Util;
+import minigame.plugin.contest.Main;
 import minigame.plugin.contest.engine.managers.ArenaManager;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerCommandPreprocessEvent;
 
-public class PlayerMove implements Listener {
+import java.util.List;
 
-    Util u = new Util();
+public class PlayerCommandPreProccess implements Listener {
 
     @EventHandler
-    public void onPlayerMove(PlayerMoveEvent e) {
-        if(e.getFrom().getX() == e.getTo().getX() || e.getFrom().getZ() == e.getTo().getZ())
-            return;
-
+    public void onPlayerCommandPreProccess(PlayerCommandPreprocessEvent e) {
         ArenaManager am = ArenaManager.getManager();
         Player p = e.getPlayer();
 
@@ -27,14 +25,10 @@ public class PlayerMove implements Listener {
         if (a == null)
             return;
 
-        if (!a.isInProgress())
-            return;
-
-        if (a.isFrozen())
+        List<String> blocked = Main.getInstance().getConfig().getStringList("blocked-commands");
+        if (blocked.contains(e.getMessage().split(" ")[0])) {
+            p.sendMessage(ChatColor.RED + "You cannot use that command while in a game!");
             e.setCancelled(true);
-
-        if (!am.isInsideArenaBounds(a, e.getTo())) {
-            p.setVelocity(p.getVelocity().multiply(-2));
         }
     }
 

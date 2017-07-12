@@ -1,5 +1,6 @@
 package minigame.plugin.contest.commands;
 
+import minigame.plugin.contest.Main;
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.listeners.PlayerInteract;
 import minigame.plugin.contest.engine.managers.ArenaManager;
@@ -176,6 +177,41 @@ public class MainCommand implements CommandExecutor {
 
                 a.addSpawn(p.getLocation());
                 p.sendMessage(ChatColor.GREEN + "Successfully added spawn for " + name);
+                return true;
+            } else if (args[0].equalsIgnoreCase("spectate") || args[0].equalsIgnoreCase("spec")) {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                    return false;
+                }
+                if (!sender.hasPermission("races.spectate")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
+
+                Player p = (Player) sender;
+                if (!(args.length > 1)) {
+                    p.sendMessage(ChatColor.RED + "Invalid arguments! Correct usage is /race spectate <name>");
+                    return false;
+                }
+
+                String name = args[1];
+                Arena a = ArenaManager.getManager().getArena(name);
+                if (a == null) {
+                    p.sendMessage(ChatColor.RED + "Could not find an arena called " + name);
+                    return false;
+                }
+
+                a.addSpectator(p);
+                p.sendMessage(ChatColor.GREEN + "You are now spectating " + name);
+                return true;
+            } else if (args[0].equalsIgnoreCase("reload")) {
+                if (!sender.hasPermission("races.reload")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
+
+                Main.getInstance().reloadConfig();;
+                sender.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");
                 return true;
             }
             else {

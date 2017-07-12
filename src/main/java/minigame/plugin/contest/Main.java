@@ -6,9 +6,7 @@ import com.google.common.cache.LoadingCache;
 import lombok.Getter;
 import minigame.plugin.contest.backend.GamePlayer;
 import minigame.plugin.contest.commands.MainCommand;
-import minigame.plugin.contest.engine.listeners.PlayerInteract;
-import minigame.plugin.contest.engine.listeners.PlayerMove;
-import minigame.plugin.contest.engine.listeners.PlayerQuit;
+import minigame.plugin.contest.engine.listeners.*;
 import minigame.plugin.contest.engine.managers.ArenaManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
@@ -32,6 +30,14 @@ public class Main extends JavaPlugin {
      *
      */
 
+
+    //TODO
+    //sign click
+    //Restart breaks spectate spawn
+    //wall velocity
+    //pitch/yaw?
+    //spectator walls
+
     private @Getter static Plugin instance;
 
     private static final LoadingCache<UUID, GamePlayer> playerCache;
@@ -51,6 +57,10 @@ public class Main extends JavaPlugin {
                 });
     }
 
+    public static Plugin getInstance() {
+        return instance;
+    }
+
     public GamePlayer getPlayer(final UUID obj)
     {
         GamePlayer player = null;
@@ -68,11 +78,6 @@ public class Main extends JavaPlugin {
     {
         playerCache.invalidate(obj);
     }
-
-    //TODO
-    //spectate
-    //death?
-    //signs
 
     @Override
     public void onEnable() {
@@ -95,7 +100,11 @@ public class Main extends JavaPlugin {
         Stream.of(
                 new PlayerInteract(),
                 new PlayerMove(),
-                new PlayerQuit()
+                new PlayerQuit(),
+                new EntityDamageByEntity(),
+                new PlayerCommandPreProccess(),
+                new PlayerTeleport(),
+                new SignChange()
         ).forEach(e -> getServer().getPluginManager().registerEvents(e, this));
     }
 }

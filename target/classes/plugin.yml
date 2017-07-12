@@ -6,3 +6,21 @@ description: Racing game
 commands:
   race:
     description: Main Command
+
+permissions:
+  races.join:
+    default: true
+  races.spectate:
+    default: true
+  races.*:
+    description: All permissions
+    default: op
+    children:
+      races.join: true
+      races.spectate: true
+      races.addspawn: true
+      races.reload: true
+      races.arenawand: true
+      races.create: true
+      races.setlobby: true
+      races.setspectator: true

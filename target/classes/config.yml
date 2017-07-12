@@ -6,3 +6,20 @@ match-countdown: 5
 
 #Match length (in minutes)
 match-length: 2
+
+#How signs should be displayed
+sign-format:
+- "&f[&2Races&f]"
+- "&6%arena_name%"
+- "&2%action%"
+- "&6%players%/%max_players%"
+
+#Blocked commands while ingame
+blocked-commands:
+- /fly
+- /god
+- /gm
+- /gamemode
+- /heal
+- /give
+- /tp

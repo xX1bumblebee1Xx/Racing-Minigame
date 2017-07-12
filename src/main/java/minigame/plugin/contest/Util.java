@@ -34,18 +34,13 @@ public class Util {
         p.getInventory().setItem(8, i);
     }
 
-    public boolean isInsideArena(Player p, Location to) {
-        Arena a = ArenaManager.getManager().getArena(p.getUniqueId());
-        Location p1 = a.getP1();
-        Location p2 = a.getP2();
-        if(to.getX() < p1.getBlockX() || to.getX() > p2.getBlockX()) {
-            return false;
-        } else if(to.getZ() > p1.getBlockZ() || to.getZ() < p2.getBlockZ()) {
-            return false;
-        } else if(to.getY() > p1.getBlockY() || to.getY() < p2.getBlockY()) {
-            return false;
-        }
-        return true;
+    public String parseSignLine(String line, Arena a, String action) {
+        line = line.replace("%arena_name%", a.getName());
+        line = line.replace("%players%", String.valueOf(a.getPlayers().size()));
+        line = line.replace("%max_players%", String.valueOf(a.getSpawns().size()));
+        line = line.replace("%action%", action);
+
+        return ChatColor.translateAlternateColorCodes('&', line);
     }
 
     public void sendSubtitle(Arena a, String text, String color) {

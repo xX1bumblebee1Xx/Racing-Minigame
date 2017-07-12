@@ -20,6 +20,7 @@ public class Arena {
 
     private String name = null;
     private ArrayList<UUID> players = new ArrayList<UUID>();
+    private ArrayList<UUID> spectators = new ArrayList<UUID>();
     private Location lobby = null;
     private Location spec = null;
     private boolean inProgress = false;
@@ -39,6 +40,10 @@ public class Arena {
         return players;
     }
 
+    public ArrayList<UUID> getSpecatators() {
+        return spectators;
+    }
+
     public Location getLobby() {
         return lobby;
     }
@@ -48,6 +53,13 @@ public class Arena {
     }
 
     public boolean isInProgress() { return inProgress; }
+
+    public void addSpectator(Player p) {
+        System.out.println("P: " + p);
+        getSpecatators().add(p.getUniqueId());
+        p.teleport(getSpecSpawn());
+        p.setGameMode(GameMode.SPECTATOR);
+    }
 
     public void addSpawn(Location l) {
         File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
@@ -224,26 +236,34 @@ public class Arena {
         for (Iterator<UUID> i = getPlayers().iterator(); i.hasNext();) {
             UUID uuid = i.next();
             final Player p = Bukkit.getServer().getPlayer(uuid);
-            System.out.println("Ran");
             u.sendTitle(this, "Game over!", "red");
             p.sendMessage(ChatColor.GOLD + "Game over!");
             i.remove();
-            Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), new Runnable() {
-                @Override
-                public void run() {
-                    p.getInventory().clear();
-                    p.getInventory().setArmorContents(null);
-                    p.getInventory().setContents(ArenaManager.inv.get(p.getUniqueId()));
-                    ArenaManager.inv.remove(p.getUniqueId());
-                    p.teleport(ArenaManager.locs.get(p.getUniqueId()));
-                    ArenaManager.locs.remove(p.getUniqueId());
-                    p.setFireTicks(0);
-                }
+            Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
+                p.getInventory().clear();
+                p.getInventory().setArmorContents(null);
+                p.getInventory().setContents(ArenaManager.inv.get(p.getUniqueId()));
+                ArenaManager.inv.remove(p.getUniqueId());
+                p.teleport(ArenaManager.locs.get(p.getUniqueId()));
+                ArenaManager.locs.remove(p.getUniqueId());
+                p.setFireTicks(0);
             }, 100);
         }
+
+        for (Iterator<UUID> i = getSpecatators().iterator(); i.hasNext();) {
+            UUID uuid = i.next();
+            final Player p = Bukkit.getServer().getPlayer(uuid);
+            u.sendTitle(this, "Game over!", "red");
+            p.sendMessage(ChatColor.GOLD + "Game over!");
+            i.remove();
+            Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () ->
+                    p.teleport(ArenaManager.locs.get(p.getUniqueId())), 100);
+        }
+
         inProgress = false;
         frozen = true;
         getPlayers().clear();
+        getSpecatators().clear();
         init();
     }
 }

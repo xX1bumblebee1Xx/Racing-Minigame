@@ -71,6 +71,25 @@ public class ArenaManager {
         return a;
     }
 
+    public boolean isInsideArenaBounds(Arena a, Location l) {
+        Location l1 = a.getP1();
+        Location l2 = a.getP2();
+
+        int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
+        int y1 = Math.min(l1.getBlockY(), l2.getBlockY());
+        int z1 = Math.min(l1.getBlockZ(), l2.getBlockZ());
+        int x2 = Math.max(l1.getBlockX(), l2.getBlockX());
+        int y2 = Math.max(l1.getBlockY(), l2.getBlockY());
+        int z2 = Math.max(l1.getBlockZ(), l2.getBlockZ());
+        int x = l.getBlockX();
+        int y = l.getBlockY();
+        int z = l.getBlockZ();
+        if ((x >= x1) && (x <= x2) && (y >= y1) && (y <= y2) && (z >= z1) && (z <= z2)) {
+            return true;
+        }
+        return false;
+    }
+
     public List<Arena> getArenas() { return arenas; }
 
     public void addPlayer(Player p, String name) {
@@ -173,4 +192,12 @@ public class ArenaManager {
         return false;
     }
 
+    public Arena getSpectatingGame(Player p) {
+        for (Arena a : arenas) {
+            if (a.getSpecatators().contains(p.getUniqueId())) {
+                return a;
+            }
+        }
+        return null;
+    }
 }
