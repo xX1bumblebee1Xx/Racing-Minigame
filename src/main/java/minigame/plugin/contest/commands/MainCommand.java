@@ -79,6 +79,42 @@ public class MainCommand implements CommandExecutor {
                 Arena a = am.getArena(name);
                 a.init();
                 return true;
+            } else if (args[0].equalsIgnoreCase("setend")) {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                    return false;
+                }
+                Player p = (Player) sender;
+                if (!(args.length > 1)) {
+                    p.sendMessage(ChatColor.RED + "Invalid arguments! Correct usage is /race setend <name>");
+                    return false;
+                }
+
+                if (!PlayerInteract.Aleft.containsKey(p)) {
+                    p.sendMessage(ChatColor.RED + "Please make sure both positions are set!");
+                    return false;
+                } else if (!PlayerInteract.Aright.containsKey(p)) {
+                    p.sendMessage(ChatColor.RED + "Please make sure both positions are set!");
+                    return false;
+                }
+
+                Location l = PlayerInteract.Aleft.get(p);
+                Location r = PlayerInteract.Aright.get(p);
+                if (!l.getWorld().getName().equals(r.getWorld().getName())) {
+                    p.sendMessage(ChatColor.RED + "Both positions must be in the same world");
+                    return false;
+                }
+
+                String name = args[1];
+                Arena a = am.getArena(name);
+                if (a == null) {
+                    p.sendMessage(ChatColor.GRAY + "Could not find an arena called " + name);
+                    return false;
+                }
+
+                a.setEndZone(l, r);
+                p.sendMessage(ChatColor.GRAY + "Successfully set end zone for " + name);
+                return true;
             } else if (args[0].equalsIgnoreCase("setlobby")) {
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
@@ -204,6 +240,25 @@ public class MainCommand implements CommandExecutor {
                 a.addSpectator(p);
                 p.sendMessage(ChatColor.GREEN + "You are now spectating " + name);
                 return true;
+            } else if (args[0].equalsIgnoreCase("leave")) {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                    return false;
+                }
+                if (!sender.hasPermission("races.spectate")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
+
+                Player p = (Player) sender;
+
+                if (!am.isInGame(p) || am.getSpectatingGame(p) == null) {
+                    p.sendMessage(ChatColor.RED + "You are not in a game!");
+                    return false;
+                }
+
+                am.removePlayer(p);
+                return true;
             } else if (args[0].equalsIgnoreCase("reload")) {
                 if (!sender.hasPermission("races.reload")) {
                     sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
@@ -213,8 +268,7 @@ public class MainCommand implements CommandExecutor {
                 Main.getInstance().reloadConfig();;
                 sender.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");
                 return true;
-            }
-            else {
+            } else {
                 sender.sendMessage(ChatColor.RED + "Invalid arguments! Type /race help for help.");
                 return false;
             }

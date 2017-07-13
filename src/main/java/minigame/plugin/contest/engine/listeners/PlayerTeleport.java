@@ -23,7 +23,7 @@ public class PlayerTeleport implements Listener {
         if (a == null)
             return;
 
-        if (am.isInsideArenaBounds(a, l))
+        if (am.isInsideArenaBounds(a, l, a.getP1(), a.getP2()))
             return;
 
         p.sendMessage(ChatColor.RED + "You cannot teleport outside the arena!");

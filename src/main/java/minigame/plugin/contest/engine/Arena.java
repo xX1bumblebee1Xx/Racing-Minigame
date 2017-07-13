@@ -19,10 +19,13 @@ public class Arena {
     private ArenaManager manager;
 
     private String name = null;
-    private ArrayList<UUID> players = new ArrayList<UUID>();
-    private ArrayList<UUID> spectators = new ArrayList<UUID>();
+    private List<UUID> finished = new ArrayList<>();
+    private List<UUID> players = new ArrayList<>();
+    private List<UUID> spectators = new ArrayList<>();
     private Location lobby = null;
     private Location spec = null;
+    private Location endP1 = null;
+    private Location endP2 = null;
     private boolean inProgress = false;
     private boolean frozen = true;
 
@@ -36,11 +39,15 @@ public class Arena {
         return name;
     }
 
-    public ArrayList<UUID> getPlayers() {
+    public List<UUID> getPlayers() {
         return players;
     }
 
-    public ArrayList<UUID> getSpecatators() {
+    public List<UUID> getFinished() {
+        return finished;
+    }
+
+    public List<UUID> getSpecatators() {
         return spectators;
     }
 
@@ -58,6 +65,64 @@ public class Arena {
         getSpecatators().add(p.getUniqueId());
         p.teleport(getSpecSpawn());
         p.setGameMode(GameMode.SPECTATOR);
+    }
+
+    public void setFinished(Player p, int position) {
+        position++;
+        finished.add(position, p.getUniqueId());
+        String suffix = position == 1 ? "st" : position == 2 ? "nd" : position == 3 ? "rd" : "th";
+        u.sendTitle(p, "You finished " + position + suffix, "green");
+    }
+
+    public void setEndZone(Location p1, Location p2) {
+        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
+        c.set("arenas." + name + ".end.world", p1.getWorld().getName());
+        c.set("arenas." + name + ".end.x1", p1.getBlockX());
+        c.set("arenas." + name + ".end.y1", p1.getBlockY());
+        c.set("arenas." + name + ".end.z1", p1.getBlockZ());
+        c.set("arenas." + name + ".end.x2", p2.getBlockX());
+        c.set("arenas." + name + ".end.y2", p2.getBlockY());
+        c.set("arenas." + name + ".end.z2", p2.getBlockZ());
+        try {
+            c.save(locations);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setLobby(Location l) {
+        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
+        c.set("arenas." + name + ".lobby.world", l.getWorld().getName());
+        c.set("arenas." + name + ".lobby.x", l.getBlockX());
+        c.set("arenas." + name + ".lobby.y", l.getBlockY());
+        c.set("arenas." + name + ".lobby.z", l.getBlockZ());
+        c.set("arenas." + name + ".lobby.pitch", l.getPitch());
+        c.set("arenas." + name + ".lobby.yaw", l.getYaw());
+        try {
+            c.save(locations);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        lobby = l;
+    }
+
+    public void setSpecSpawn(Location l) {
+        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
+        c.set("arenas." + name + ".specSpawn.world", l.getWorld().getName());
+        c.set("arenas." + name + ".specSpawn.x", l.getBlockX());
+        c.set("arenas." + name + ".specSpawn.y", l.getBlockY());
+        c.set("arenas." + name + ".specSpawn.z", l.getBlockZ());
+        c.set("arenas." + name + ".specSpawn.pitch", l.getPitch());
+        c.set("arenas." + name + ".specSpawn.yaw", l.getYaw());
+        try {
+            c.save(locations);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        spec = l;
     }
 
     public void addSpawn(Location l) {
@@ -86,6 +151,32 @@ public class Arena {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public Location getEndZoneP1() {
+        if (endP1 != null)
+            return endP1;
+
+        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
+        World w = Bukkit.getServer().getWorld(c.getString("arenas." + name + ".end.world"));
+        int x = c.getInt("arenas." + name + ".end.x1");
+        int y = c.getInt("arenas." + name + ".end.y1");
+        int z = c.getInt("arenas." + name + ".end.z1");
+        return new Location(w, x, y, z);
+    }
+
+    public Location getEndZoneP2() {
+        if (endP2 != null)
+            return endP2;
+
+        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
+        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
+        World w = Bukkit.getServer().getWorld(c.getString("arenas." + name + ".end.world"));
+        int x = c.getInt("arenas." + name + ".end.x2");
+        int y = c.getInt("arenas." + name + ".end.y2");
+        int z = c.getInt("arenas." + name + ".end.z2");
+        return new Location(w, x, y, z);
     }
 
     public List<Location> getSpawns() {
@@ -134,40 +225,6 @@ public class Arena {
         int z2 = c.getInt("arenas." + name + ".bounds.z2");
         Location l2 = new Location(w, x2, y2, z2);
         return l2;
-    }
-
-    public void setLobby(Location l) {
-        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
-        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
-        c.set("arenas." + name + ".lobby.world", l.getWorld().getName());
-        c.set("arenas." + name + ".lobby.x", l.getBlockX());
-        c.set("arenas." + name + ".lobby.y", l.getBlockY());
-        c.set("arenas." + name + ".lobby.z", l.getBlockZ());
-        c.set("arenas." + name + ".lobby.pitch", l.getPitch());
-        c.set("arenas." + name + ".lobby.yaw", l.getYaw());
-        try {
-            c.save(locations);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        lobby = l;
-    }
-
-    public void setSpecSpawn(Location l) {
-        File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
-        YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
-        c.set("arenas." + name + ".specSpawn.world", l.getWorld().getName());
-        c.set("arenas." + name + ".specSpawn.x", l.getBlockX());
-        c.set("arenas." + name + ".specSpawn.y", l.getBlockY());
-        c.set("arenas." + name + ".specSpawn.z", l.getBlockZ());
-        c.set("arenas." + name + ".specSpawn.pitch", l.getPitch());
-        c.set("arenas." + name + ".specSpawn.yaw", l.getYaw());
-        try {
-            c.save(locations);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        spec = l;
     }
 
     public void init() {

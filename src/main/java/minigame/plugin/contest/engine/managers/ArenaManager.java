@@ -73,10 +73,7 @@ public class ArenaManager {
         return a;
     }
 
-    public boolean isInsideArenaBounds(Arena a, Location l) {
-        Location l1 = a.getP1();
-        Location l2 = a.getP2();
-
+    public boolean isInsideArenaBounds(Arena a, Location l, Location l1, Location l2) {
         int x1 = Math.min(l1.getBlockX(), l2.getBlockX());
         int y1 = Math.min(l1.getBlockY(), l2.getBlockY());
         int z1 = Math.min(l1.getBlockZ(), l2.getBlockZ());
@@ -100,7 +97,7 @@ public class ArenaManager {
             p.sendMessage(ChatColor.RED + "Could not find that arena!");
             return;
         }
-        if (a.getSpawns() == null || a.getSpawns().isEmpty() || a.getLobby() == null) {
+        if (a.getSpawns() == null || a.getSpawns().isEmpty() || a.getLobby() == null || a.getEndZoneP1() == null) {
             p.sendMessage(ChatColor.RED + "Error: Not all spawns are set!");
             return;
         }

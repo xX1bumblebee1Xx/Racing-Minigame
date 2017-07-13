@@ -35,10 +35,17 @@ public class PlayerMove implements Listener {
         if (a.isFrozen())
             e.setCancelled(true);
 
-        if (!am.isInsideArenaBounds(a, e.getTo())) {
+        if (!am.isInsideArenaBounds(a, e.getTo(), a.getP1(), a.getP2())) {
             Location center = u.getCenter(a);
             Vector direction = p.getLocation().toVector().subtract(center.toVector()).normalize();
             p.setVelocity(direction.setY(0).multiply(-2));
+        }
+
+        if (am.isInsideArenaBounds(a, p.getLocation(), a.getEndZoneP1(), a.getEndZoneP2())) {
+            a.setFinished(p, a.getFinished().size());
+            if (a.getFinished().size() == a.getPlayers().size()) {
+                a.end();
+            }
         }
     }
 
