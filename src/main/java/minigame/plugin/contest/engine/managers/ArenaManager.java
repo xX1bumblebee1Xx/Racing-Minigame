@@ -175,9 +175,18 @@ public class ArenaManager {
             int lz = c.getInt("arenas." + arena + ".lobby.z");
             int lp = c.getInt("arenas." + arena + ".lobby.pitch");
             int lyaw = c.getInt("arenas." + arena + ".lobby.yaw");
-            Location lobby = new Location(lw, lx, ly, lz, lp, lyaw);
+            Location lobby = new Location(lw, lx, ly, lz, lyaw, lp);
+
+            World specw = Bukkit.getServer().getWorld(c.getString("arenas." + arena + ".lobby.world"));
+            int specx = c.getInt("arenas." + arena + ".specSpawn.x");
+            int specy = c.getInt("arenas." + arena + ".specSpawn.y");
+            int specz = c.getInt("arenas." + arena + ".specSpawn.z");
+            int specp = c.getInt("arenas." + arena + ".specSpawn.pitch");
+            int specyaw = c.getInt("arenas." + arena + ".specSpawn.yaw");
+            Location spec = new Location(specw, specx, specy, specz, specyaw, specp);
 
             a.setLobby(lobby);
+            a.setSpecSpawn(spec);
             arenas.add(a);
             a.init();
         }

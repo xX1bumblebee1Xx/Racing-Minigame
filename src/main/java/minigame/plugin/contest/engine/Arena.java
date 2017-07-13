@@ -104,7 +104,7 @@ public class Arena {
             int z = c.getInt("arenas." + name + ".spawns." + id + ".z");
             float pitch = c.getInt("arenas." + name + ".spawns." + id + ".pitch");
             float yaw = c.getInt("arenas." + name + ".spawns." + id + ".yaw");
-            spawns.add(new Location(w, x, y, z, pitch, yaw));
+            spawns.add(new Location(w, x, y, z, yaw, pitch));
         }
 
         return spawns;

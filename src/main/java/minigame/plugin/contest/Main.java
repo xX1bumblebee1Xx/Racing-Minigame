@@ -27,9 +27,6 @@ public class Main extends JavaPlugin {
 
 
     //TODO
-    //sign click
-    //wall velocity
-    //
     //spectator walls
     //restart breaks spectate spawn
     //spawn pitch/yaw?
