@@ -3,10 +3,12 @@ package minigame.plugin.contest.engine.listeners;
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.Util;
 import minigame.plugin.contest.engine.managers.ArenaManager;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.util.Vector;
 
 public class PlayerMove implements Listener {
 
@@ -34,7 +36,9 @@ public class PlayerMove implements Listener {
             e.setCancelled(true);
 
         if (!am.isInsideArenaBounds(a, e.getTo())) {
-            p.setVelocity(p.getVelocity().multiply(-2));
+            Location center = u.getCenter(a);
+            Vector direction = p.getLocation().toVector().subtract(center.toVector()).normalize();
+            p.setVelocity(direction.setY(0).multiply(-2));
         }
     }
 

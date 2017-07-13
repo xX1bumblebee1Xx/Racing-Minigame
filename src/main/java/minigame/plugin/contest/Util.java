@@ -4,10 +4,7 @@ import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.managers.ArenaManager;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -32,6 +29,26 @@ public class Util {
         im.setDisplayName(ChatColor.RED + "Leave");
         i.setItemMeta(im);
         p.getInventory().setItem(8, i);
+    }
+
+    public Location getCenter(Arena a) {
+        World w = a.getP1().getWorld();
+        Location top = new Location(w, 0, 0, 0);
+        top.setX(a.getP1().getBlockX());
+        top.setY(a.getP1().getBlockY());
+        top.setZ(a.getP1().getBlockZ());
+
+        Location bottom = new Location(w, 0, 0, 0);
+        bottom.setX(a.getP2().getX());
+        bottom.setY(a.getP2().getY());
+        bottom.setZ(a.getP2().getZ());
+
+        double X =  ((top.getX() - bottom.getX())/2) + bottom.getX();
+        double Y =  ((top.getY() - bottom.getY())/2) + bottom.getY();
+        double Z =  ((top.getZ() - bottom.getZ())/2) + bottom.getZ();
+
+        return new Location(w, X, Y, Z);
+
     }
 
     public String parseSignLine(String line, Arena a, String action) {

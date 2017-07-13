@@ -28,14 +28,15 @@ public class Main extends JavaPlugin {
 
     //TODO
     //sign click
-    //Restart breaks spectate spawn
     //wall velocity
-    //pitch/yaw?
+    //
     //spectator walls
+    //restart breaks spectate spawn
+    //spawn pitch/yaw?
 
     private @Getter static Plugin instance;
     private @Getter static final GameCache cache = new GameCache();
-    private @Getter static final WebConnector api = new WebConnector(new MySQL("localhost", 3306, "root", "", "koenzime"));
+    private @Getter static final WebConnector api = new WebConnector(new MySQL("localhost", 3306, "root", "user", "koenzime"));
 
     @Override
     public void onEnable() {

@@ -55,7 +55,6 @@ public class Arena {
     public boolean isInProgress() { return inProgress; }
 
     public void addSpectator(Player p) {
-        System.out.println("P: " + p);
         getSpecatators().add(p.getUniqueId());
         p.teleport(getSpecSpawn());
         p.setGameMode(GameMode.SPECTATOR);
