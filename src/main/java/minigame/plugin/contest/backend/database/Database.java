@@ -79,8 +79,9 @@ public abstract class Database
     public final ResultSet query(final String path)
     {
         ResultSet result = null;
-        try (final Statement statement = this.connection.createStatement())
+        try
         {
+            final Statement statement = this.connection.createStatement();
             result = statement.executeQuery(path);
         } catch (SQLException e)
         {
@@ -99,8 +100,9 @@ public abstract class Database
     public final int update(final String path)
     {
         int result = -1;
-        try (final Statement statement = this.connection.createStatement())
+        try
         {
+            final Statement statement = this.connection.createStatement();
             result = statement.executeUpdate(path);
         } catch (SQLException e)
         {

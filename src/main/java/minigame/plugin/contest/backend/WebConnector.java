@@ -23,8 +23,9 @@ public class WebConnector
     public int getId(final UUID uuid)
     {
         int id = -1;
-        try (ResultSet resultSet = this.database.query(String.format("SELECT id FROM game WHERE uuid='%s';", uuid.toString())))
+        try
         {
+            final ResultSet resultSet = this.database.query(String.format("SELECT id FROM game WHERE uuid='%s';", uuid.toString()));
             id = resultSet.next() ? resultSet.getInt("id") : 0;
         } catch (SQLException e)
         {
@@ -33,16 +34,30 @@ public class WebConnector
         return id;
     }
 
+    private boolean exists(final UUID uuid)
+    {
+        try
+        {
+            return this.database.query(String.format("SELECT * FROM game WHERE uuid='%s';", uuid.toString())).next();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public void addUser(final UUID uuid)
     {
-        this.database.update(String.format("INSERT INTO game (uuid, coins) VALUES ('%s', '0');", uuid.toString()));
+        if (!exists(uuid))
+            this.database.update(String.format("INSERT INTO game (uuid, coins) VALUES ('%s', '0');", uuid.toString()));
     }
 
     public int getCoins(final UUID uuid)
     {
         int coins = -1;
-        try (ResultSet resultSet = this.database.query(String.format("SELECT coins FROM game WHERE uuid='%s';", uuid.toString())))
+        try
         {
+            ResultSet resultSet = this.database.query(String.format("SELECT coins FROM game WHERE uuid='%s';", uuid.toString()));
             coins = resultSet.next() ? resultSet.getInt("coins") : 0;
         } catch (SQLException e)
         {

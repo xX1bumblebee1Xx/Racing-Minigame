@@ -7,7 +7,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Created by Vengeancey on 12.7.2017..
@@ -19,6 +18,7 @@ public class ConnectionListener implements Listener
     {
         long start = System.currentTimeMillis();
         int id;
+        Main.getApi().addUser(e.getUniqueId());
         do
         {
             //max loop time of 50ms
@@ -26,16 +26,18 @@ public class ConnectionListener implements Listener
             {
                 e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
                 e.setKickMessage(ChatColor.RED + "Loop time result: > 50 ms.\nCheck the databases.");
+                Main.getCache().clear(e.getUniqueId()); //Remove from cache
                 return;
             }
             id = Main.getApi().getId(e.getUniqueId());
         } while (id < 0);
-    }
-
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onJoin(final PlayerJoinEvent e)
-    {
-        final GamePlayer obj = Main.getCache().getPlayer(e.getPlayer().getUniqueId());
-        //todo
+        /**
+         * TODO
+         * Set state
+         * Wait for sufficient players to join
+         * Start countdown
+         * Initiate game
+         * Teleport players to arena
+         */
     }
 }
