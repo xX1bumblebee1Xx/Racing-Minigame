@@ -28,8 +28,7 @@ public class Main extends JavaPlugin {
 
     //TODO
     //spectator walls
-    //restart breaks spectate spawn
-    //spawn pitch/yaw?
+    //spectator leave
 
     private @Getter static Plugin instance;
     private @Getter static final GameCache cache = new GameCache();

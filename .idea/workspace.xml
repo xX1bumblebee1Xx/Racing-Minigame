@@ -2,15 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="f5b73af7-8c68-4d89-9bf5-f79ba417fc93" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/Game.jar" afterPath="$PROJECT_DIR$/target/Game.jar" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/minigame/plugin/contest/Main.class" afterPath="$PROJECT_DIR$/target/classes/minigame/plugin/contest/Main.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/minigame/plugin/contest/engine/Arena.class" afterPath="$PROJECT_DIR$/target/classes/minigame/plugin/contest/engine/Arena.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/minigame/plugin/contest/engine/managers/ArenaManager.class" afterPath="$PROJECT_DIR$/target/classes/minigame/plugin/contest/engine/managers/ArenaManager.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Main.java" afterPath="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Main.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/Arena.java" afterPath="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/Arena.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/managers/ArenaManager.java" afterPath="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/managers/ArenaManager.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -31,11 +25,21 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Main.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Main.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Main.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5046729">
-              <caret line="34" column="44" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="PlayerMove.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/listeners/PlayerMove.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.3364486">
+              <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -83,8 +87,8 @@
         <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Util.java" />
         <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/listeners/PlayerInteract.java" />
         <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/listeners/PlayerMove.java" />
-        <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/Arena.java" />
+        <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Main.java" />
         <option value="$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/managers/ArenaManager.java" />
       </list>
     </option>
@@ -1119,26 +1123,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/listeners/PlayerMove.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.22429906">
-          <caret line="16" column="17" selection-start-line="16" selection-start-column="17" selection-end-line="16" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar:///usr/lib/jvm/java-1.8.0-openjdk-amd64/jre/lib/rt.jar!/java/util/UUID.class">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.67536706">
           <caret line="29" column="56" selection-start-line="29" selection-start-column="56" selection-end-line="29" selection-end-column="56" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/managers/ArenaManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.39252338">
-          <caret line="178" column="0" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
           <folding />
         </state>
       </provider>
@@ -1153,8 +1141,24 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/Main.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5046729">
-          <caret line="34" column="44" selection-start-line="34" selection-start-column="44" selection-end-line="34" selection-end-column="44" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/managers/ArenaManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.6339564">
+          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/minigame/plugin/contest/engine/listeners/PlayerMove.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.3364486">
+          <caret line="20" column="0" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
           <folding />
         </state>
       </provider>

@@ -45,6 +45,8 @@ public class ArenaManager {
         for (Arena a : getArenas()) {
             if (a.getPlayers().contains(uuid)) {
                 return a;
+            } else if (a.getSpecatators().contains(uuid)) {
+                return a;
             }
         }
         return null;
