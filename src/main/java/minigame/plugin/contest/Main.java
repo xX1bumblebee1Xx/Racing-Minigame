@@ -25,11 +25,6 @@ public class Main extends JavaPlugin {
      *
      */
 
-
-    //TODO
-    //spawn management
-    //block break/place
-
     private @Getter static Plugin instance;
     private @Getter static final GameCache cache = new GameCache();
     private @Getter static WebConnector api;
@@ -67,6 +62,8 @@ public class Main extends JavaPlugin {
                 new PlayerCommandPreProccess(),
                 new PlayerTeleport(),
                 new SignChange(),
+                new BlockBreak(),
+                new BlockPlace(),
                 new ConnectionListener()
         ).forEach(e -> getServer().getPluginManager().registerEvents(e, this));
     }

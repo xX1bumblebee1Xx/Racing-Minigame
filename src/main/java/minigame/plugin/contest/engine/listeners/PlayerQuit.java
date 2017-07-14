@@ -1,5 +1,6 @@
 package minigame.plugin.contest.engine.listeners;
 
+import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.managers.ArenaManager;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,8 +16,10 @@ public class PlayerQuit implements Listener {
             PlayerInteract.Aleft.remove(p);
         if (PlayerInteract.Aright.containsKey(p))
             PlayerInteract.Aright.remove(p);
-        if (ArenaManager.getManager().isInGame(p)) {
-            //TODO remove from game and restore pos/inv
+
+        ArenaManager am = ArenaManager.getManager();
+        if (am.isInGame(p)) {
+            am.removePlayer(p);
         }
     }
 

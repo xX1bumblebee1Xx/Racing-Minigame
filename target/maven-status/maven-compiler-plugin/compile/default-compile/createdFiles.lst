@@ -1,5 +1,7 @@
 minigame/plugin/contest/engine/Arena$3.class
+minigame/plugin/contest/engine/listeners/BlockPlace.class
 minigame/plugin/contest/engine/listeners/SignChange.class
+minigame/plugin/contest/engine/listeners/BlockBreak.class
 minigame/plugin/contest/backend/database/Database.class
 minigame/plugin/contest/engine/listeners/PlayerCommandPreProccess.class
 minigame/plugin/contest/engine/listeners/EntityDamageByEntity.class
