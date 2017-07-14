@@ -316,6 +316,8 @@ public class Arena {
             u.sendTitle(this, "Game over!", "red");
             i.remove();
             Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
+                if (p == null)
+                    return;
                 p.getInventory().clear();
                 p.getInventory().setArmorContents(null);
                 p.getInventory().setContents(ArenaManager.inv.get(p.getUniqueId()));
