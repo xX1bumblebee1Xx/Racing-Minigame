@@ -6,6 +6,13 @@ mysql:
   password: ""
   database: "koenzime"
 
+#Game rewards
+rewards:
+  first: 50
+  second: 30
+  third: 20
+  default: 10
+
 #Miniumum amount of players required before the game starts
 min-players: 2
 

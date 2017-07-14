@@ -26,6 +26,5 @@ permissions:
       races.setspectator: true
       races.spawns: true
       races.addspawn: true
-      races.delspawn: true
       races.setend: true
       races.setspec: true

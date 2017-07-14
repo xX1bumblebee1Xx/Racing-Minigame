@@ -2,6 +2,7 @@ package minigame.plugin.contest.engine;
 
 import minigame.plugin.contest.Main;
 import minigame.plugin.contest.Util;
+import minigame.plugin.contest.backend.GamePlayer;
 import minigame.plugin.contest.engine.managers.ArenaManager;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -294,27 +295,10 @@ public class Arena {
     }
 
     public void end() {
-        for (UUID uuid : getPlayers()) {
-            Player p = Bukkit.getServer().getPlayer(uuid);
-            if (p == null)
-                continue;
-
-            p.sendMessage(ChatColor.GOLD + "--- Race Results ---");
-            for (int i = 0; i < getFinished().size(); i++) {
-                Player t = Bukkit.getServer().getPlayer(getFinished().get(i));
-                if (t == null)
-                    continue;
-
-                String suffix = i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th";
-                p.sendMessage(ChatColor.GOLD + t.getName() + " finished " + (i+1) + suffix);
-            }
-        }
-
         for (Iterator<UUID> i = getPlayers().iterator(); i.hasNext();) {
             UUID uuid = i.next();
             final Player p = Bukkit.getServer().getPlayer(uuid);
             u.sendTitle(this, "Game over!", "red");
-            i.remove();
             Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
                 if (p == null)
                     return;
@@ -333,9 +317,30 @@ public class Arena {
             final Player p = Bukkit.getServer().getPlayer(uuid);
             u.sendTitle(this, "Game over!", "red");
             p.sendMessage(ChatColor.GOLD + "Game over!");
-            i.remove();
             Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () ->
                     p.teleport(ArenaManager.locs.get(p.getUniqueId())), 100);
+        }
+
+        for (UUID uuid : getPlayers()) {
+            Player p = Bukkit.getServer().getPlayer(uuid);
+            if (p == null)
+                continue;
+
+            String rewardType = "";
+            p.sendMessage(ChatColor.GOLD + "--- Race Results ---");
+            for (int i = 0; i < getFinished().size(); i++) {
+                Player t = Bukkit.getServer().getPlayer(getFinished().get(i));
+                if (t == null)
+                    continue;
+
+                rewardType = i == 0 ? "first" : i == 1 ? "second" : i == 2 ? "third" : "default";
+                String suffix = i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th";
+                p.sendMessage(ChatColor.GOLD + t.getName() + " finished " + (i+1) + suffix);
+            }
+
+            int reward = Main.getInstance().getConfig().getInt("rewards." + rewardType);
+            GamePlayer gp = new GamePlayer(uuid);
+            gp.incrementCoins(reward);
         }
 
         inProgress = false;

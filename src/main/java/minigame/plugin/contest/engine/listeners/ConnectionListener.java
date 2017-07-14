@@ -24,19 +24,11 @@ public class ConnectionListener implements Listener
             //max loop time of 50ms
             if (System.currentTimeMillis() - start > 200)            {
                 e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
-                e.setKickMessage(ChatColor.RED + "Loop time result: > 50 ms.\nCheck the databases.");
+                e.setKickMessage(ChatColor.RED + "Loop time result: > 200 ms.\nCheck the databases.");
                 Main.getCache().clear(e.getUniqueId()); //Remove from cache
                 return;
             }
             id = Main.getApi().getId(e.getUniqueId());
         } while (id < 0);
-        /**
-         * TODO
-         * Set state
-         * Wait for sufficient players to join
-         * Start countdown
-         * Initiate game
-         * Teleport players to arena
-         */
     }
 }

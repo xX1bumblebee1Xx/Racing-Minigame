@@ -29,6 +29,10 @@ public class Main extends JavaPlugin {
     private @Getter static final GameCache cache = new GameCache();
     private @Getter static WebConnector api;
 
+    //TODO if we have time
+    //Scoreboard
+    //Baltop
+
     @Override
     public void onEnable() {
         saveDefaultConfig();
