@@ -41,7 +41,7 @@ public class SignChange implements Listener {
             return;
         }
 
-        for (int i = 0; i <= 3; i++) {
+        for (int i = 0; i <= 2; i++) {
             e.setLine(i, u.parseSignLine(configLines.get(i), a, lines[2]));
         }
     }

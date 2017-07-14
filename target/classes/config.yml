@@ -12,7 +12,6 @@ sign-format:
 - "&f[&2Races&f]"
 - "&6%arena_name%"
 - "&2%action%"
-- "&6%players%/%max_players%"
 
 #Blocked commands while ingame
 blocked-commands:

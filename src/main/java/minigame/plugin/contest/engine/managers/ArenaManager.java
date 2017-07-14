@@ -132,8 +132,17 @@ public class ArenaManager {
         }
 
         if (a == null) {
-            p.sendMessage(ChatColor.RED + "Couldn't find a game you are in!");
-            return;
+            a = getSpectatingGame(p);
+            if (a == null) {
+                p.sendMessage(ChatColor.RED + "Couldn't find a game you are in!");
+                return;
+            } else {
+                a.getSpecatators().remove(p.getUniqueId());
+                p.teleport(ArenaManager.locs.get(p.getUniqueId()));
+                p.setGameMode(GameMode.SURVIVAL);
+                ArenaManager.locs.remove(p.getUniqueId());
+                return;
+            }
         }
 
         a.getPlayers().remove(p.getUniqueId());

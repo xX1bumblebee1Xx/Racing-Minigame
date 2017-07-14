@@ -27,7 +27,7 @@ public class MainCommand implements CommandExecutor {
             if (args[0].equalsIgnoreCase("help")) {
                 //TODO
                 return true;
-            } else if (args[0].equalsIgnoreCase("arenawand")) {
+            } else if (args[0].equalsIgnoreCase("wand")) {
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -252,9 +252,11 @@ public class MainCommand implements CommandExecutor {
 
                 Player p = (Player) sender;
 
-                if (!am.isInGame(p) || am.getSpectatingGame(p) == null) {
-                    p.sendMessage(ChatColor.RED + "You are not in a game!");
-                    return false;
+                if (!am.isInGame(p)) {
+                    if (am.getSpectatingGame(p) == null) {
+                        p.sendMessage(ChatColor.RED + "You are not in a game!");
+                        return false;
+                    }
                 }
 
                 am.removePlayer(p);

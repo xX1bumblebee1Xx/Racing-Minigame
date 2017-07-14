@@ -22,8 +22,7 @@ public class ConnectionListener implements Listener
         do
         {
             //max loop time of 50ms
-            if (System.currentTimeMillis() - start > 50)
-            {
+            if (System.currentTimeMillis() - start > 200)            {
                 e.setLoginResult(AsyncPlayerPreLoginEvent.Result.KICK_OTHER);
                 e.setKickMessage(ChatColor.RED + "Loop time result: > 50 ms.\nCheck the databases.");
                 Main.getCache().clear(e.getUniqueId()); //Remove from cache

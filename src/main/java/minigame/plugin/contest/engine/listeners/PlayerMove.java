@@ -22,8 +22,22 @@ public class PlayerMove implements Listener {
         ArenaManager am = ArenaManager.getManager();
         Player p = e.getPlayer();
 
-        if (!am.isInGame(p))
-            return;
+        if (!am.isInGame(p)) {
+            if (am.getSpectatingGame(p) == null) {
+                return;
+            } else {
+                Arena a = am.getArena(p.getUniqueId());
+                if (a == null)
+                    return;
+
+                if (!am.isInsideArenaBounds(a, e.getTo(), a.getP1(), a.getP2())) {
+                    Location center = u.getCenter(a);
+                    Vector direction = p.getLocation().toVector().subtract(center.toVector()).normalize();
+                    p.setVelocity(direction.setY(0).multiply(-2));
+                }
+                return;
+            }
+        }
 
         Arena a = am.getArena(p.getUniqueId());
         if (a == null)
@@ -42,6 +56,9 @@ public class PlayerMove implements Listener {
         }
 
         if (am.isInsideArenaBounds(a, p.getLocation(), a.getEndZoneP1(), a.getEndZoneP2())) {
+            if (a.getFinished().contains(p.getUniqueId()))
+                return;
+
             a.setFinished(p, a.getFinished().size());
             if (a.getFinished().size() == a.getPlayers().size()) {
                 a.end();

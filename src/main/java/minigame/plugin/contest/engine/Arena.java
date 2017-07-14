@@ -63,15 +63,16 @@ public class Arena {
 
     public void addSpectator(Player p) {
         getSpecatators().add(p.getUniqueId());
+        ArenaManager.locs.put(p.getUniqueId(), p.getLocation());
         p.teleport(getSpecSpawn());
         p.setGameMode(GameMode.SPECTATOR);
     }
 
     public void setFinished(Player p, int position) {
-        position++;
         finished.add(position, p.getUniqueId());
-        String suffix = position == 1 ? "st" : position == 2 ? "nd" : position == 3 ? "rd" : "th";
-        u.sendTitle(p, "You finished " + position + suffix, "green");
+        String suffix = position == 0 ? "st" : position == 1 ? "nd" : position == 2 ? "rd" : "th";
+        u.sendTitle(p, "You finished " + (position+1) + suffix, "green");
+        p.sendMessage(ChatColor.GREEN + "You finished " + (position+1) + suffix);
     }
 
     public void setEndZone(Location p1, Location p2) {
@@ -159,7 +160,11 @@ public class Arena {
 
         File locations = new File(Main.getInstance().getDataFolder() + File.separator + "locations.yml");
         YamlConfiguration c = YamlConfiguration.loadConfiguration(locations);
-        World w = Bukkit.getServer().getWorld(c.getString("arenas." + name + ".end.world"));
+        String worldName = c.getString("arenas." + name + ".end.world");
+        if (worldName == null)
+            return null;
+
+        World w = Bukkit.getServer().getWorld(worldName);
         int x = c.getInt("arenas." + name + ".end.x1");
         int y = c.getInt("arenas." + name + ".end.y1");
         int z = c.getInt("arenas." + name + ".end.z1");
@@ -289,11 +294,26 @@ public class Arena {
     }
 
     public void end() {
+        for (UUID uuid : getPlayers()) {
+            Player p = Bukkit.getServer().getPlayer(uuid);
+            if (p == null)
+                continue;
+
+            p.sendMessage(ChatColor.GOLD + "--- Race Results ---");
+            for (int i = 0; i < getFinished().size(); i++) {
+                Player t = Bukkit.getServer().getPlayer(getFinished().get(i));
+                if (t == null)
+                    continue;
+
+                String suffix = i == 0 ? "st" : i == 1 ? "nd" : i == 2 ? "rd" : "th";
+                p.sendMessage(ChatColor.GOLD + t.getName() + " finished " + (i+1) + suffix);
+            }
+        }
+
         for (Iterator<UUID> i = getPlayers().iterator(); i.hasNext();) {
             UUID uuid = i.next();
             final Player p = Bukkit.getServer().getPlayer(uuid);
             u.sendTitle(this, "Game over!", "red");
-            p.sendMessage(ChatColor.GOLD + "Game over!");
             i.remove();
             Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
                 p.getInventory().clear();

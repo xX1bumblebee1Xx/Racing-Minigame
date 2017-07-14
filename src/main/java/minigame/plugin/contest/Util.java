@@ -53,8 +53,6 @@ public class Util {
 
     public String parseSignLine(String line, Arena a, String action) {
         line = line.replace("%arena_name%", a.getName());
-        line = line.replace("%players%", String.valueOf(a.getPlayers().size()));
-        line = line.replace("%max_players%", String.valueOf(a.getSpawns().size()));
         line = line.replace("%action%", action);
 
         return ChatColor.translateAlternateColorCodes('&', line);

@@ -27,11 +27,12 @@ public class Main extends JavaPlugin {
 
 
     //TODO
-    //spectator leave
+    //spawn management
+    //block break/place
 
     private @Getter static Plugin instance;
     private @Getter static final GameCache cache = new GameCache();
-    private @Getter static final WebConnector api = new WebConnector(new MySQL("localhost", 3306, "root", "user", "koenzime"));
+    private @Getter static final WebConnector api = new WebConnector(new MySQL("localhost", 3306, "root", "", "koenzime"));
 
     @Override
     public void onEnable() {
