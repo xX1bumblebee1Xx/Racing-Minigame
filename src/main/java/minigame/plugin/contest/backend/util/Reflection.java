@@ -2,6 +2,7 @@ package minigame.plugin.contest.backend.util;
 
 import lombok.Getter;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.stream.Stream;
@@ -11,11 +12,11 @@ import java.util.stream.Stream;
  */
 public class Reflection implements IMethod
 {
-    private @Getter static Reflection reflection;
+    private @Getter static Reflection reflection = new Reflection();
 
-    protected Reflection()
+    public String json(final String s)
     {
-        reflection = reflection == null ? new Reflection() : reflection;
+        return "{\"text\":\"" + ChatColor.translateAlternateColorCodes('&', s) + "\"}";
     }
 
     @Override

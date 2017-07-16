@@ -2,11 +2,16 @@ package minigame.plugin.contest.engine.listeners;
 
 import minigame.plugin.contest.Main;
 import minigame.plugin.contest.backend.GamePlayer;
+import minigame.plugin.contest.backend.scoreboard.GameBoard;
+import minigame.plugin.contest.backend.util.packet.TitlePacket;
+import minigame.plugin.contest.engine.Kit;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
 
 /**
  * Created by Vengeancey on 12.7.2017..
@@ -30,5 +35,23 @@ public class ConnectionListener implements Listener
             }
             id = Main.getApi().getId(e.getUniqueId());
         } while (id < 0);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent e)
+    {
+        //example
+        final GamePlayer obj = Main.getCache().getPlayer(e.getPlayer().getUniqueId());
+        new TitlePacket("&c&lGame", "&eWelcome to the race!").send(5);
+        GameBoard board = new GameBoard(
+                Bukkit.getOnlinePlayers().size() >= 4
+                        ? "&e&lCountdown..."
+                        : "&e&lWaiting"); // if the player size iz larger than 4
+
+        board.add(" ");
+        board.add("&fCoins: &e" + obj.getCoins());
+
+        board.register();
+        board.send(e.getPlayer());
     }
 }

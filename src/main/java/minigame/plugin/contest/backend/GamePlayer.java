@@ -15,7 +15,7 @@ public class GamePlayer
     private @Getter final UUID uuid;
     private @Getter String name;
     private @Getter GameState state;
-    private @Getter int coins;
+    private int coins;
 
     public GamePlayer(final UUID uuid)
     {
@@ -28,6 +28,12 @@ public class GamePlayer
     public void updateState(final GameState state)
     {
         this.state = state;
+    }
+
+    public int getCoins()
+    {
+        //getting coins from database
+        return Main.getApi().getCoins(uuid);
     }
 
     public void setCoins(int amount)
