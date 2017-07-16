@@ -1,6 +1,4 @@
 # Racing Game
-<b>Description:</b><br>
-First person to cross the line
 
 <b>Commands:</b><br>
 - /race help: Shows this command
