@@ -1,26 +1,28 @@
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\commands\MainCommand.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\PlayerInteract.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\ConnectionListener.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\PlayerTeleport.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\GameCache.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\Main.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\SignChange.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\util\packet\TitlePacket.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\EntityDamageByEntity.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\scoreboard\GameBoard.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\database\MySQL.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\Arena.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\database\Database.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\GamePlayer.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\PlayerMove.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\PlayerCommandPreProccess.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\PlayerQuit.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\Util.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\BlockBreak.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\managers\ArenaManager.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\Kit.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\WebConnector.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\util\IMethod.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\GameState.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\engine\listeners\BlockPlace.java
-C:\Users\Zvijer\Desktop\IntelliJ Projects\Racing-Minigame\src\main\java\minigame\plugin\contest\backend\util\Reflection.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/SignChange.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/PlayerMove.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/PlayerQuit.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/InventoryClick.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/util/packet/TitlePacket.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/util/IMethod.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/Util.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/GameState.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/Kit.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/BlockPlace.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/PlayerInteract.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/PlayerCommandPreProccess.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/EntityDamageByEntity.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/commands/MainCommand.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/GamePlayer.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/WebConnector.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/managers/ArenaManager.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/database/MySQL.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/scoreboard/GameBoard.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/PlayerTeleport.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/util/Reflection.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/GameCache.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/managers/InventoryManager.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/Main.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/backend/database/Database.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/ConnectionListener.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/Arena.java
+/home/user/workspace/Racing-Minigame/src/main/java/minigame/plugin/contest/engine/listeners/BlockBreak.java

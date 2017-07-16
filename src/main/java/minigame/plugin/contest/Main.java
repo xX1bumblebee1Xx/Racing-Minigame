@@ -29,9 +29,11 @@ public class Main extends JavaPlugin {
     private @Getter static final GameCache cache = new GameCache();
     private @Getter static WebConnector api;
 
-    //TODO if we have time
+    //TODO
+    //Abilities
     //Scoreboard
-    //Baltop
+    //Time
+    //Help cmd
 
     @Override
     public void onEnable() {
@@ -68,6 +70,7 @@ public class Main extends JavaPlugin {
                 new SignChange(),
                 new BlockBreak(),
                 new BlockPlace(),
+                new InventoryClick(),
                 new ConnectionListener()
         ).forEach(e -> getServer().getPluginManager().registerEvents(e, this));
     }

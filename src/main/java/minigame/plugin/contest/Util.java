@@ -1,6 +1,7 @@
 package minigame.plugin.contest;
 
 import minigame.plugin.contest.engine.Arena;
+import minigame.plugin.contest.engine.Kit;
 import minigame.plugin.contest.engine.managers.ArenaManager;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
@@ -11,6 +12,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
+import java.util.Random;
 import java.util.UUID;
 
 public class Util {
@@ -31,6 +33,22 @@ public class Util {
         p.getInventory().setItem(8, i);
     }
 
+    public boolean isHeroSelected(Kit hero) {
+        for (Kit k : Kit.values()) {
+            if (k == hero)
+                return true;
+        }
+        return false;
+    }
+
+    public Kit getKitFromString(String name) {
+        for (Kit k : Kit.values()) {
+            if (k.getName().equals(name))
+                return k;
+        }
+        return null;
+    }
+
     public Location getCenter(Arena a) {
         World w = a.getP1().getWorld();
         Location top = new Location(w, 0, 0, 0);
@@ -49,6 +67,18 @@ public class Util {
 
         return new Location(w, X, Y, Z);
 
+    }
+
+    public Kit getRandomKit() {
+        Random r = new Random();
+        int c = r.nextInt(7);
+        int i = 0;
+        for (Kit k : Kit.values()) {
+            if (i == c)
+                return k;
+            i++;
+        }
+        return null;
     }
 
     public String parseSignLine(String line, Arena a, String action) {

@@ -2,11 +2,16 @@ package minigame.plugin.contest.engine;
 
 import minigame.plugin.contest.Main;
 import minigame.plugin.contest.Util;
+import minigame.plugin.contest.backend.GameCache;
 import minigame.plugin.contest.backend.GamePlayer;
 import minigame.plugin.contest.engine.managers.ArenaManager;
+import minigame.plugin.contest.engine.managers.InventoryManager;
 import org.bukkit.*;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.io.File;
@@ -251,7 +256,8 @@ public class Arena {
                     }
                 }
             }
-        }.runTaskTimer(Main.getInstance(), 20*30, 20*30);
+                                        //TODO time
+        }.runTaskTimer(Main.getInstance(), 20*60, 20*60);
     }
 
     public void start() {
@@ -276,6 +282,25 @@ public class Arena {
                     u.sendTitle(a, "GO!", "green");
                     u.sendSubtitle(a, "", "white");
                     frozen = false;
+
+                    PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 3);
+                    for (UUID uuid : getPlayers()) {
+                        Player p = Bukkit.getServer().getPlayer(uuid);
+                        if (p == null)
+                            continue;
+
+                        p.addPotionEffect(speed);
+
+                        if (!InventoryManager.getSelected().containsKey(uuid)) {
+                            Kit kit = u.getRandomKit();
+
+                            while (InventoryManager.getSelected().containsValue(kit))
+                                kit = u.getRandomKit();
+
+                            p.sendMessage(ChatColor.GREEN + "Selected " + kit.getName());
+                            InventoryManager.getSelected().put(p.getUniqueId(), kit);
+                        }
+                    }
 
                     cancel();
                 } else {
@@ -309,6 +334,7 @@ public class Arena {
                 p.teleport(ArenaManager.locs.get(p.getUniqueId()));
                 ArenaManager.locs.remove(p.getUniqueId());
                 p.setFireTicks(0);
+                p.removePotionEffect(PotionEffectType.SPEED);
             }, 100);
         }
 
@@ -339,7 +365,8 @@ public class Arena {
             }
 
             int reward = Main.getInstance().getConfig().getInt("rewards." + rewardType);
-            GamePlayer gp = new GamePlayer(uuid);
+            GameCache gc = new GameCache();
+            GamePlayer gp = gc.getPlayer(uuid);
             gp.incrementCoins(reward);
         }
 

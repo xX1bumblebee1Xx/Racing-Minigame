@@ -3,6 +3,7 @@ package minigame.plugin.contest.engine.listeners;
 import minigame.plugin.contest.Main;
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.managers.ArenaManager;
+import minigame.plugin.contest.engine.managers.InventoryManager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -19,6 +20,8 @@ import java.util.HashMap;
 import java.util.List;
 
 public class PlayerInteract implements Listener {
+
+    InventoryManager inv = new InventoryManager();
 
     public static HashMap<Player, Location> Aright = new HashMap<Player, Location>();
     public static HashMap<Player, Location> Aleft = new HashMap<Player, Location>();
@@ -106,8 +109,8 @@ public class PlayerInteract implements Listener {
             am.removePlayer(p);
             p.sendMessage(ChatColor.GREEN + "You have left the game.");
             e.setCancelled(true);
-        } else if (dis.equalsIgnoreCase(ChatColor.DARK_PURPLE + "Select a hero")) {
-            //TODO select a hero gui
+        } else if (dis.equalsIgnoreCase("Select a hero")) {
+            inv.openHeroMenu(p);
         }
     }
 

@@ -1,6 +1,7 @@
 package minigame.plugin.contest.commands;
 
 import minigame.plugin.contest.Main;
+import minigame.plugin.contest.backend.GameCache;
 import minigame.plugin.contest.backend.GamePlayer;
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.listeners.PlayerInteract;
@@ -323,7 +324,7 @@ public class MainCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
                 }
-                if (!sender.hasPermission("races.delspawn")) {
+                if (!sender.hasPermission("races.balance")) {
                     sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
                     return false;
                 }
@@ -336,11 +337,11 @@ public class MainCommand implements CommandExecutor {
                         return false;
                     }
 
-                    GamePlayer gp = new GamePlayer(t.getUniqueId());
+                    GamePlayer gp = Main.getCache().getPlayer(t.getUniqueId());
                     p.sendMessage(ChatColor.RED + gp.getName() + " has " + gp.getCoins() + " coins.");
                     return true;
                 } else {
-                    GamePlayer gp = new GamePlayer(p.getUniqueId());
+                    GamePlayer gp = Main.getCache().getPlayer(p.getUniqueId());
                     p.sendMessage(ChatColor.GOLD + "You have " + gp.getCoins() + " coins.");
                     return true;
                 }
