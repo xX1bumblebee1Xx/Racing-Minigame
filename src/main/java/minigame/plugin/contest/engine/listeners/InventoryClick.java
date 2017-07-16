@@ -1,7 +1,9 @@
 package minigame.plugin.contest.engine.listeners;
 
 import minigame.plugin.contest.Util;
+import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.Kit;
+import minigame.plugin.contest.engine.managers.ArenaManager;
 import minigame.plugin.contest.engine.managers.InventoryManager;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.entity.Player;
@@ -36,12 +38,16 @@ public class InventoryClick implements Listener {
                 return;
             }
 
-            if (InventoryManager.getSelected().containsValue(kit)) {
+            Arena a = ArenaManager.getManager().getArena(p.getUniqueId());
+            if (a == null)
+                return;
+
+            if (a.getSelected().containsValue(kit)) {
                 p.sendMessage(ChatColor.RED + "That hero is already selected!");
                 return;
             }
 
-            InventoryManager.getSelected().put(p.getUniqueId(), kit);
+            a.getSelected().put(p.getUniqueId(), kit);
             p.closeInventory();
             p.sendMessage(ChatColor.GREEN + "Selected " + dis);
         }

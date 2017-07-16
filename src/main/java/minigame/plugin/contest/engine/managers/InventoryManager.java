@@ -13,8 +13,6 @@ import java.util.*;
 
 public class InventoryManager {
 
-    private static Map<UUID, Kit> selected = new HashMap<>();
-
     public void openHeroMenu(Player p) {
         Inventory inv = Bukkit.getServer().createInventory(null, 27, "Select a hero");
 
@@ -33,10 +31,6 @@ public class InventoryManager {
         }
 
         p.openInventory(inv);
-    }
-
-    public static Map<UUID, Kit> getSelected() {
-        return selected;
     }
 
     public ItemStack createItem(Material mat, short metadata, String displayName, List<String> lore) {

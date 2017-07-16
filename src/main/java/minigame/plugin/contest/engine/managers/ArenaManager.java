@@ -1,8 +1,8 @@
 package minigame.plugin.contest.engine.managers;
 
-import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.Main;
 import minigame.plugin.contest.Util;
+import minigame.plugin.contest.engine.Arena;
 import org.bukkit.*;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -45,7 +45,7 @@ public class ArenaManager {
         for (Arena a : getArenas()) {
             if (a.getPlayers().contains(uuid)) {
                 return a;
-            } else if (a.getSpecatators().contains(uuid)) {
+            } else if (a.getSpectators().contains(uuid)) {
                 return a;
             }
         }
@@ -121,6 +121,7 @@ public class ArenaManager {
                 t.sendMessage(ChatColor.GREEN + p.getName() + " has joined the game.");
             }
         }
+        a.updateBoards();
     }
 
     public void removePlayer(Player p) {
@@ -137,7 +138,7 @@ public class ArenaManager {
                 p.sendMessage(ChatColor.RED + "Couldn't find a game you are in!");
                 return;
             } else {
-                a.getSpecatators().remove(p.getUniqueId());
+                a.getSpectators().remove(p.getUniqueId());
                 p.teleport(ArenaManager.locs.get(p.getUniqueId()));
                 p.setGameMode(GameMode.SURVIVAL);
                 ArenaManager.locs.remove(p.getUniqueId());
@@ -211,7 +212,7 @@ public class ArenaManager {
 
     public Arena getSpectatingGame(Player p) {
         for (Arena a : arenas) {
-            if (a.getSpecatators().contains(p.getUniqueId())) {
+            if (a.getSpectators().contains(p.getUniqueId())) {
                 return a;
             }
         }

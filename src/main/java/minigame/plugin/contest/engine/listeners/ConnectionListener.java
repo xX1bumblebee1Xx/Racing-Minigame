@@ -36,22 +36,4 @@ public class ConnectionListener implements Listener
             id = Main.getApi().getId(e.getUniqueId());
         } while (id < 0);
     }
-
-    @EventHandler
-    public void onJoin(PlayerJoinEvent e)
-    {
-        //example
-        final GamePlayer obj = Main.getCache().getPlayer(e.getPlayer().getUniqueId());
-        new TitlePacket("&c&lGame", "&eWelcome to the race!").send(5);
-        GameBoard board = new GameBoard(
-                Bukkit.getOnlinePlayers().size() >= 4
-                        ? "&e&lCountdown..."
-                        : "&e&lWaiting"); // if the player size iz larger than 4
-
-        board.add(" ");
-        board.add("&fCoins: &e" + obj.getCoins());
-
-        board.register();
-        board.send(e.getPlayer());
-    }
 }

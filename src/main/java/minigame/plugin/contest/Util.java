@@ -2,7 +2,6 @@ package minigame.plugin.contest;
 
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.Kit;
-import minigame.plugin.contest.engine.managers.ArenaManager;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
 import net.minecraft.server.v1_12_R1.PacketPlayOutTitle;
 import org.bukkit.*;
@@ -11,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 import java.util.UUID;
@@ -21,6 +21,7 @@ public class Util {
         ItemStack i = new ItemStack(Material.WOOL);
         ItemMeta im = i.getItemMeta();
         im.setDisplayName(ChatColor.GREEN + "Select a hero");
+        im.setLore(Collections.singletonList(ChatColor.translateAlternateColorCodes('&',"&aClick to use ability")));
         i.setItemMeta(im);
         p.getInventory().setItem(0, i);
     }
@@ -87,37 +88,4 @@ public class Util {
 
         return ChatColor.translateAlternateColorCodes('&', line);
     }
-
-    public void sendSubtitle(Arena a, String text, String color) {
-        List<UUID> players = a.getPlayers();
-        if (!(players.isEmpty())) {
-            PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\", \"color\":\"" + color +  "\"}"), 35, 40, 35);
-            for (UUID uuid : players) {
-                Player p = Bukkit.getServer().getPlayer(uuid);
-                if (p == null) return;
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(subtitle);
-            }
-        }
-    }
-    public void sendSubtitle(Player p, String text, String color) {
-        PacketPlayOutTitle subtitle = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.SUBTITLE, IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\", \"color\":\"" + color +  "\"}"), 35, 40, 35);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(subtitle);
-    }
-
-    public void sendTitle(Arena a, String text, String color) {
-        List<UUID> players = a.getPlayers();
-        if (!(players.isEmpty())) {
-            PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\", \"color\":\"" + color +  "\"}"), 35, 40, 35);
-            for (UUID uuid : players) {
-                Player p = Bukkit.getServer().getPlayer(uuid);
-                if (p == null) return;
-                ((CraftPlayer) p).getHandle().playerConnection.sendPacket(title);
-            }
-        }
-    }
-    public void sendTitle(Player p, String text, String color) {
-        PacketPlayOutTitle title = new PacketPlayOutTitle(PacketPlayOutTitle.EnumTitleAction.TITLE, IChatBaseComponent.ChatSerializer.a("{\"text\":\"" + text + "\", \"color\":\"" + color +  "\"}"), 35, 40, 35);
-        ((CraftPlayer) p).getHandle().playerConnection.sendPacket(title);
-    }
-
 }

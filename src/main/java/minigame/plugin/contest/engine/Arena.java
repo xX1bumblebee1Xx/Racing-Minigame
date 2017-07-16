@@ -1,13 +1,14 @@
 package minigame.plugin.contest.engine;
 
+import lombok.Getter;
 import minigame.plugin.contest.Main;
 import minigame.plugin.contest.Util;
 import minigame.plugin.contest.backend.GameCache;
 import minigame.plugin.contest.backend.GamePlayer;
+import minigame.plugin.contest.backend.scoreboard.GameBoard;
+import minigame.plugin.contest.backend.util.packet.TitlePacket;
 import minigame.plugin.contest.engine.managers.ArenaManager;
-import minigame.plugin.contest.engine.managers.InventoryManager;
 import org.bukkit.*;
-import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
@@ -24,51 +25,26 @@ public class Arena {
 
     private ArenaManager manager;
 
-    private String name = null;
-    private List<UUID> finished = new ArrayList<>();
-    private List<UUID> players = new ArrayList<>();
-    private List<UUID> spectators = new ArrayList<>();
-    private Location lobby = null;
-    private Location spec = null;
-    private Location endP1 = null;
-    private Location endP2 = null;
-    private boolean inProgress = false;
-    private boolean frozen = true;
-
+    private @Getter String name = null;
+    private @Getter List<UUID> finished = new ArrayList<>();
+    private @Getter List<UUID> players = new ArrayList<>();
+    private @Getter List<UUID> spectators = new ArrayList<>();
+    private @Getter List<UUID> abilityUsed = new ArrayList<>();
+    private @Getter Map<UUID, Kit> selected = new HashMap<>();
+    private @Getter Location lobby = null;
+    private @Getter Location specSpawn = null;
+    private @Getter Location endP1 = null;
+    private @Getter Location endP2 = null;
+    private @Getter boolean inProgress = false;
+    private @Getter boolean frozen = true;
 
     public Arena(String name) {
         this.manager = ArenaManager.getManager();
         this.name = name;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public List<UUID> getPlayers() {
-        return players;
-    }
-
-    public List<UUID> getFinished() {
-        return finished;
-    }
-
-    public List<UUID> getSpecatators() {
-        return spectators;
-    }
-
-    public Location getLobby() {
-        return lobby;
-    }
-
-    public Location getSpecSpawn() {
-        return spec;
-    }
-
-    public boolean isInProgress() { return inProgress; }
-
     public void addSpectator(Player p) {
-        getSpecatators().add(p.getUniqueId());
+        getSpectators().add(p.getUniqueId());
         ArenaManager.locs.put(p.getUniqueId(), p.getLocation());
         p.teleport(getSpecSpawn());
         p.setGameMode(GameMode.SPECTATOR);
@@ -77,7 +53,7 @@ public class Arena {
     public void setFinished(Player p, int position) {
         finished.add(position, p.getUniqueId());
         String suffix = position == 0 ? "st" : position == 1 ? "nd" : position == 2 ? "rd" : "th";
-        u.sendTitle(p, "You finished " + (position+1) + suffix, "green");
+        new TitlePacket("&aYou finished " + (position+1) + suffix, "").sendToPlayer(p, 5);
         p.sendMessage(ChatColor.GREEN + "You finished " + (position+1) + suffix);
     }
 
@@ -129,7 +105,7 @@ public class Arena {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        spec = l;
+        specSpawn = l;
     }
 
     public void addSpawn(Location l) {
@@ -238,6 +214,21 @@ public class Arena {
         return l2;
     }
 
+    public void updateBoards() {
+        int min = Main.getInstance().getConfig().getInt("min-players");
+        for (UUID uuid : getPlayers()) {
+            GamePlayer gp = Main.getCache().getPlayer(uuid);
+
+            GameBoard board = new GameBoard(getPlayers().size() >= min ?
+                    "&a&lIn-game" : "&e&lWaiting");
+            board.add(" ");
+            board.add("&6Coins: &e" + gp.getCoins());
+
+            board.register();
+            board.send(Bukkit.getServer().getPlayer(uuid));
+        }
+    }
+
     public void init() {
         final int min = Main.getInstance().getConfig().getInt("min-players");
         new BukkitRunnable() {
@@ -256,8 +247,7 @@ public class Arena {
                     }
                 }
             }
-                                        //TODO time
-        }.runTaskTimer(Main.getInstance(), 20*60, 20*60);
+        }.runTaskTimer(Main.getInstance(), 20*30, 20*30);
     }
 
     public void start() {
@@ -279,11 +269,11 @@ public class Arena {
             public void run() {
                 if (time <= 0) {
                     cancel();
-                    u.sendTitle(a, "GO!", "green");
-                    u.sendSubtitle(a, "", "white");
+                    new TitlePacket("&aGO!", "").sendToArena(a, 2);
+                    updateBoards();
                     frozen = false;
 
-                    PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 3);
+                    PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2);
                     for (UUID uuid : getPlayers()) {
                         Player p = Bukkit.getServer().getPlayer(uuid);
                         if (p == null)
@@ -291,21 +281,20 @@ public class Arena {
 
                         p.addPotionEffect(speed);
 
-                        if (!InventoryManager.getSelected().containsKey(uuid)) {
+                        if (!getSelected().containsKey(uuid)) {
                             Kit kit = u.getRandomKit();
 
-                            while (InventoryManager.getSelected().containsValue(kit))
+                            while (getSelected().containsValue(kit))
                                 kit = u.getRandomKit();
 
                             p.sendMessage(ChatColor.GREEN + "Selected " + kit.getName());
-                            InventoryManager.getSelected().put(p.getUniqueId(), kit);
+                            getSelected().put(p.getUniqueId(), kit);
                         }
                     }
 
                     cancel();
                 } else {
-                    u.sendTitle(a, String.valueOf(time), "red");
-                    u.sendSubtitle(a, "seconds until the game starts!", "yellow");
+                    new TitlePacket("&c"+String.valueOf(time),"&eseconds until the game starts!").sendToArena(a, 2);
                     time--;
                 }
             }
@@ -323,7 +312,8 @@ public class Arena {
         for (Iterator<UUID> i = getPlayers().iterator(); i.hasNext();) {
             UUID uuid = i.next();
             final Player p = Bukkit.getServer().getPlayer(uuid);
-            u.sendTitle(this, "Game over!", "red");
+            new TitlePacket("&cGame Over", "").sendToArena(this, 5);
+
             Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
                 if (p == null)
                     return;
@@ -335,13 +325,14 @@ public class Arena {
                 ArenaManager.locs.remove(p.getUniqueId());
                 p.setFireTicks(0);
                 p.removePotionEffect(PotionEffectType.SPEED);
-            }, 100);
+                p.setScoreboard(Bukkit.getServer().getScoreboardManager().getNewScoreboard());
+            }, 150);
         }
 
-        for (Iterator<UUID> i = getSpecatators().iterator(); i.hasNext();) {
+        for (Iterator<UUID> i = getSpectators().iterator(); i.hasNext();) {
             UUID uuid = i.next();
             final Player p = Bukkit.getServer().getPlayer(uuid);
-            u.sendTitle(this, "Game over!", "red");
+            new TitlePacket("&cGame Over", "").sendToArena(this, 5);
             p.sendMessage(ChatColor.GOLD + "Game over!");
             Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () ->
                     p.teleport(ArenaManager.locs.get(p.getUniqueId())), 100);
@@ -368,12 +359,25 @@ public class Arena {
             GameCache gc = new GameCache();
             GamePlayer gp = gc.getPlayer(uuid);
             gp.incrementCoins(reward);
+
+            GameBoard board = new GameBoard("&c&lGame Over");
+            board.add(" ");
+            board.add("&6Winners:");
+            for (int id = 0; id < getFinished().size(); id++) {
+                Player t = Bukkit.getServer().getPlayer(getFinished().get(id));
+                if (t == null)
+                    continue;
+
+                board.add("&6" + (id+1) + ": " + p.getName());
+            }
+            board.register();
+            board.send(p);
         }
 
         inProgress = false;
         frozen = true;
         getPlayers().clear();
-        getSpecatators().clear();
+        getSpectators().clear();
         init();
     }
 }

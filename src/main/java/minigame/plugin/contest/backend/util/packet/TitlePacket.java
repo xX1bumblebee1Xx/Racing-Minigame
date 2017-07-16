@@ -1,11 +1,15 @@
 package minigame.plugin.contest.backend.util.packet;
 
 import minigame.plugin.contest.backend.util.Reflection;
+import minigame.plugin.contest.engine.Arena;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.lang.reflect.Constructor;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Vengeancey on 16.7.2017..
@@ -47,9 +51,23 @@ public class TitlePacket extends Reflection
         }
     }
 
-    public void send(int duration)
+    public void sendToArena(Arena a, int duration)
     {
-        send(Bukkit.getOnlinePlayers(), duration);
+        List<Player> players = new ArrayList<>();
+        for (UUID uuid : a.getPlayers()) {
+            Player p = Bukkit.getServer().getPlayer(uuid);
+            if (p == null)
+                continue;
+            players.add(p);
+        }
+        send(players, duration);
+    }
+
+    public void sendToPlayer(Player p, int duration)
+    {
+        List<Player> players = new ArrayList<>();
+        players.add(p);
+        send(players, duration);
     }
 
     public void send(Collection<? extends Player> players, int duration)

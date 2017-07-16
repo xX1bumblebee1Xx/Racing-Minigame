@@ -14,26 +14,9 @@ import java.util.stream.Stream;
 
 public class Main extends JavaPlugin {
 
-    /**
-     *
-     *      - Mavenized the project
-     *      - Use J8's features
-     *
-     *      We're using the cache for handling
-     *      player data, and connecting it to
-     *      the database.
-     *
-     */
-
     private @Getter static Plugin instance;
     private @Getter static final GameCache cache = new GameCache();
     private @Getter static WebConnector api;
-
-    //TODO
-    //Abilities
-    //Scoreboard
-    //Time
-    //Help cmd
 
     @Override
     public void onEnable() {

@@ -27,7 +27,19 @@ public class MainCommand implements CommandExecutor {
 
             ArenaManager am = ArenaManager.getManager();
             if (args[0].equalsIgnoreCase("help")) {
-                //TODO help cmd
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race help&f: Shows this command"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race wand&f: Gives the arena wand"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race create <name>&f: Creates an arena"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race setend <name>&f: Sets the end zone"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race setlobby <name>&f: Sets the lobby"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race setspectator <name>&f: Sets the spectator point"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race join <name>&f: Joins an arena"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race addspawn <name>&f: Adds an arena spawn"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race spawns <name>&f: Shows the spawns for an arena"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race spectate <name>&f: Spectate an arena"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race leave&f: Desc"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race reload&f: Reload the config"));
+                sender.sendMessage(ChatColor.translateAlternateColorCodes('&', "&6/race balance [player]&f: Show your coin balance"));
                 return true;
             } else if (args[0].equalsIgnoreCase("wand")) {
                 if (!sender.hasPermission("races.wand")) {

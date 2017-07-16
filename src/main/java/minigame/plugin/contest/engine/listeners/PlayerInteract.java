@@ -4,6 +4,7 @@ import minigame.plugin.contest.Main;
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.managers.ArenaManager;
 import minigame.plugin.contest.engine.managers.InventoryManager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.block.Block;
@@ -14,6 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.EquipmentSlot;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,8 +26,8 @@ public class PlayerInteract implements Listener {
 
     InventoryManager inv = new InventoryManager();
 
-    public static HashMap<Player, Location> Aright = new HashMap<Player, Location>();
-    public static HashMap<Player, Location> Aleft = new HashMap<Player, Location>();
+    public static HashMap<Player, Location> Aright = new HashMap<>();
+    public static HashMap<Player, Location> Aleft = new HashMap<>();
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
@@ -81,7 +84,6 @@ public class PlayerInteract implements Listener {
             }
         }
 
-
         if (e.getItem() == null) return;
         if (!e.getItem().hasItemMeta()) return;
         if (!e.getItem().getItemMeta().hasDisplayName()) return;
@@ -110,8 +112,33 @@ public class PlayerInteract implements Listener {
             p.sendMessage(ChatColor.GREEN + "You have left the game.");
             e.setCancelled(true);
         } else if (dis.equalsIgnoreCase("Select a hero")) {
+            if (am.isInGame(p) && am.getArena(p.getUniqueId()).isInProgress()) {
+                Arena a = am.getArena(p.getUniqueId());
+                if (a != null && a.isInProgress()) {
+                    if (a.getAbilityUsed().contains(p.getUniqueId())) {
+                        p.sendMessage(ChatColor.RED + "You have already used your ability!");
+                        return;
+                    }
+
+                    PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 4);
+                    PotionEffect normalSpeed = new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2);
+
+                    a.getAbilityUsed().add(p.getUniqueId());
+                    p.removePotionEffect(PotionEffectType.SPEED);
+                    p.addPotionEffect(speed);
+                    p.sendMessage(ChatColor.GREEN + "You have used your ability");
+                    Bukkit.getServer().getScheduler().runTaskLater(Main.getInstance(), () -> {
+                        p.removePotionEffect(PotionEffectType.SPEED);
+                        p.addPotionEffect(normalSpeed);
+                        p.sendMessage(ChatColor.RED + "Your ability has ran out");
+                    }, 100);
+                    e.setCancelled(true);
+                    return;
+                }
+            }
+
             inv.openHeroMenu(p);
         }
-    }
 
+    }
 }
