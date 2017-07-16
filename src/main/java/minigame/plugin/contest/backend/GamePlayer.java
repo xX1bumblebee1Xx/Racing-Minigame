@@ -42,7 +42,7 @@ public class GamePlayer
 
     private void setCoins(int amount, boolean increment)
     {
-        this.coins = increment ? coins += amount : amount;
+        coins = increment ? coins += amount : amount;
         Main.getApi().setCoins(uuid, amount, increment);
     }
 }

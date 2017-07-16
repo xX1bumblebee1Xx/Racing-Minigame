@@ -1,18 +1,19 @@
 package minigame.plugin.contest.commands;
 
 import minigame.plugin.contest.Main;
+import minigame.plugin.contest.backend.GamePlayer;
 import minigame.plugin.contest.engine.Arena;
 import minigame.plugin.contest.engine.listeners.PlayerInteract;
 import minigame.plugin.contest.engine.managers.ArenaManager;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.Material;
+import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.List;
 
 public class MainCommand implements CommandExecutor {
     @Override
@@ -25,9 +26,13 @@ public class MainCommand implements CommandExecutor {
 
             ArenaManager am = ArenaManager.getManager();
             if (args[0].equalsIgnoreCase("help")) {
-                //TODO
+                //TODO help cmd
                 return true;
             } else if (args[0].equalsIgnoreCase("wand")) {
+                if (!sender.hasPermission("races.wand")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -42,6 +47,10 @@ public class MainCommand implements CommandExecutor {
                 p.sendMessage(ChatColor.GREEN + "Right-click to select position 1, Left-click to select position 2");
                 return true;
             } else if (args[0].equalsIgnoreCase("create")) {
+                if (!sender.hasPermission("races.create")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -80,6 +89,10 @@ public class MainCommand implements CommandExecutor {
                 a.init();
                 return true;
             } else if (args[0].equalsIgnoreCase("setend")) {
+                if (!sender.hasPermission("races.setend")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -116,6 +129,10 @@ public class MainCommand implements CommandExecutor {
                 p.sendMessage(ChatColor.GRAY + "Successfully set end zone for " + name);
                 return true;
             } else if (args[0].equalsIgnoreCase("setlobby")) {
+                if (!sender.hasPermission("races.setlobby")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -137,6 +154,10 @@ public class MainCommand implements CommandExecutor {
                 p.sendMessage(ChatColor.GREEN + "Successfully set lobby for " + name);
                 return true;
             } else if (args[0].equalsIgnoreCase("setspectator") || args[0].equalsIgnoreCase("setspec")) {
+                if (!sender.hasPermission("races.setspec")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -194,6 +215,10 @@ public class MainCommand implements CommandExecutor {
                 am.addPlayer(p, name);
                 return true;
             } else if (args[0].equalsIgnoreCase("addspawn")) {
+                if (!sender.hasPermission("races.addspawn")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
@@ -214,12 +239,39 @@ public class MainCommand implements CommandExecutor {
                 a.addSpawn(p.getLocation());
                 p.sendMessage(ChatColor.GREEN + "Successfully added spawn for " + name);
                 return true;
+            } else if (args[0].equalsIgnoreCase("spawns")) {
+                if (!sender.hasPermission("races.spawns")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                    return false;
+                }
+                Player p = (Player) sender;
+                if (!(args.length > 1)) {
+                    p.sendMessage(ChatColor.RED + "Invalid arguments! Correct usage is /race spawns <name>");
+                    return false;
+                }
+
+                String name = args[1];
+                Arena a = ArenaManager.getManager().getArena(name);
+                if (a == null) {
+                    p.sendMessage(ChatColor.RED + "Could not find an arena called " + name);
+                    return false;
+                }
+
+                p.sendMessage(ChatColor.GOLD + "List of spawns in " + name);
+                for (Location l : a.getSpawns()) {
+                    p.sendMessage(ChatColor.GOLD + "" + l.getBlockX() + " " + l.getBlockY() + " " + l.getBlockZ());
+                }
+                return true;
             } else if (args[0].equalsIgnoreCase("spectate") || args[0].equalsIgnoreCase("spec")) {
                 if (!(sender instanceof Player)) {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
                 }
-                if (!sender.hasPermission("races.spectate")) {
+                if (!sender.hasPermission("races.delspawn")) {
                     sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
                     return false;
                 }
@@ -245,10 +297,6 @@ public class MainCommand implements CommandExecutor {
                     sender.sendMessage(ChatColor.RED + "Only players can use this command!");
                     return false;
                 }
-                if (!sender.hasPermission("races.spectate")) {
-                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
-                    return false;
-                }
 
                 Player p = (Player) sender;
 
@@ -270,6 +318,32 @@ public class MainCommand implements CommandExecutor {
                 Main.getInstance().reloadConfig();;
                 sender.sendMessage(ChatColor.GREEN + "Successfully reloaded config!");
                 return true;
+            } else if (args[0].equals("balance") || args[0].equalsIgnoreCase("bal")) {
+                if (!(sender instanceof Player)) {
+                    sender.sendMessage(ChatColor.RED + "Only players can use this command!");
+                    return false;
+                }
+                if (!sender.hasPermission("races.delspawn")) {
+                    sender.sendMessage(ChatColor.RED + "You do not have the required permissions!");
+                    return false;
+                }
+
+                Player p = (Player) sender;
+                if (args.length > 1) {
+                    Player t = Bukkit.getServer().getPlayer(args[1]);
+                    if (t == null) {
+                        p.sendMessage(ChatColor.GOLD + "Failed to find a player called " + args[1]);
+                        return false;
+                    }
+
+                    GamePlayer gp = new GamePlayer(t.getUniqueId());
+                    p.sendMessage(ChatColor.RED + gp.getName() + " has " + gp.getCoins() + " coins.");
+                    return true;
+                } else {
+                    GamePlayer gp = new GamePlayer(p.getUniqueId());
+                    p.sendMessage(ChatColor.GOLD + "You have " + gp.getCoins() + " coins.");
+                    return true;
+                }
             } else {
                 sender.sendMessage(ChatColor.RED + "Invalid arguments! Type /race help for help.");
                 return false;

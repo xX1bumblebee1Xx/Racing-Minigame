@@ -25,19 +25,25 @@ public class Main extends JavaPlugin {
      *
      */
 
-
-    //TODO
-    //spawn management
-    //block break/place
-
     private @Getter static Plugin instance;
     private @Getter static final GameCache cache = new GameCache();
-    private @Getter static final WebConnector api = new WebConnector(new MySQL("localhost", 3306, "root", "", "koenzime"));
+    private @Getter static WebConnector api;
+
+    //TODO if we have time
+    //Scoreboard
+    //Baltop
 
     @Override
     public void onEnable() {
         saveDefaultConfig();
         instance = this;
+
+        String host = getConfig().getString("mysql.host");
+        int port = getConfig().getInt("mysql.port");
+        String user = getConfig().getString("mysql.user");
+        String password = getConfig().getString("mysql.password");
+        String database = getConfig().getString("mysql.database");
+        api = new WebConnector(new MySQL(host, port, user, password, database));
 
         Bukkit.getServer().getPluginCommand("race").setExecutor(new MainCommand());
         registerEvents();
@@ -60,6 +66,8 @@ public class Main extends JavaPlugin {
                 new PlayerCommandPreProccess(),
                 new PlayerTeleport(),
                 new SignChange(),
+                new BlockBreak(),
+                new BlockPlace(),
                 new ConnectionListener()
         ).forEach(e -> getServer().getPluginManager().registerEvents(e, this));
     }

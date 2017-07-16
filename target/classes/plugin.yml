@@ -20,7 +20,11 @@ permissions:
       races.spectate: true
       races.addspawn: true
       races.reload: true
-      races.arenawand: true
+      races.wand: true
       races.create: true
       races.setlobby: true
       races.setspectator: true
+      races.spawns: true
+      races.addspawn: true
+      races.setend: true
+      races.setspec: true
